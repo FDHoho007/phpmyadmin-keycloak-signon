@@ -10,8 +10,6 @@ ini_set("display_errors", "on");
 function http_get($url, $headers = []) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $json = json_decode(curl_exec($ch), true);
@@ -22,8 +20,6 @@ function http_get($url, $headers = []) {
 function http_post($url, $body, $headers = []) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -116,6 +112,7 @@ else if(isset($_GET["code"]) && isset($_GET["state"])) {
             $_SESSION['PMA_single_signon_host'] = $server["host"];
             $_SESSION['PMA_single_signon_user'] = $server["user"];
             $_SESSION['PMA_single_signon_password'] = $server["password"];
+            $_SESSION['PMA_single_signon_cfgupdate'] = ['verbose' => $server["verbose"]];
             $_SESSION['PMA_single_signon_HMAC_secret'] = hash('sha1', uniqid(strval(random_int(0, mt_getrandmax())), true));
         }
     session_write_close();
